@@ -309,105 +309,131 @@ subjected to $\ell_0(T)=\ell_1(T)=0$. We therefore obtain that
 \end{displaymath}
 
 Since this must be 0 for every $\mu$, we can solve the ODE's separately 
-for $\ell_0$ and $\ell_1$, obtaining that
-
-
-
-\subsection{Simulation}
-
+for $\ell_0$ and $\ell_1$. We can see that $\ell_0 = 0$, since $\ell_0(T) = 0$
+and the EDO is linear on $\ell_0$. For $\ell_1$ we get that
 \begin{displaymath}
-	\gamma = \sqrt{\frac{\phi}{k}}
-\end{displaymath}
-
-\begin{displaymath}
-	\zeta = \frac{\alpha -b/2 + \sqrt{k \phi}}{\alpha -b/2 - \sqrt{k \phi}}
-\end{displaymath}
-
-\begin{displaymath}
-	\chi(t) = \sqrt{k \phi} \frac{1+\zeta e^{2\gamma(T-t)}}{1-\zeta e^{2\gamma(T-t)}}
-\end{displaymath}
-
-\begin{displaymath}
-	\nu_{t}^{*}=-\frac{1}{k} \chi(t) Q_{t}^{\nu^{*}}-\frac{b}{2 k} \overline{\ell}_{1}(t) \mu_{t}
-\end{displaymath}
-where $\ell_{1}^{t}$ can be expressed as
-\begin{displaymath}
-	\ell_{1}(t)=b \int_{t}^{T} e^{-\kappa(s-t)} e^{\frac{1}{k} \int_{t}^{s}\chi(u) d u}  d s
-\end{displaymath}
-and  simplifies to
-\begin{displaymath}
-	{\qquad \ell_{1}(t)=b \;\ell(T-t) \geq 0}
+ \ell_1(t)  = b \int^T_t e^{-\kappa(s-t)}e^{(1/k)\int^s_t \chi(u) du},
 \end{displaymath}
 where
+\begin{align*}
+  \int^t_0 \frac{\chi(s)}{k} ds =
+  \log \frac{\zeta e^{\gamma(T-t)} - e^{-\gamma (T-t)}}{\zeta e^{\gamma T} - e^{-\gamma T}}, \quad
+  \ell_1(t) = b \ell(T-t),
+\end{align*}
+ and,
 \begin{displaymath}
-	{\qquad \ell(\tau)=\frac{1}{\zeta e^{\gamma \tau}-e^{-\gamma \tau}}\left\{e^{\gamma \tau} \frac{1-e^{-(\kappa+\gamma) \tau}}{\kappa+\gamma} \zeta-e^{-\gamma \tau} \frac{1-e^{-(\kappa-\gamma) \tau}}{\kappa-\gamma}\right\}}
+  \tau = T-t, \quad
+\ell(\tau) =\frac{1}{\zeta e^{\gamma \tau}-
+  e^{-\gamma \tau}}\left\{e^{\gamma \tau}
+\frac{1-e^{-(\kappa+\gamma) \tau}}{\kappa+\gamma}
+\zeta-e^{-\gamma \tau} \frac{1-e^{-(\kappa-\gamma) \tau}}{\kappa-\gamma}\right\}.
 \end{displaymath}
 
-\subsection{Computing the constants}
+Finally, since we obtained the expression for $h$,
+we can compute the optimal control $\nu_t^*$ by substituting in the formula we previously obtained:
+\begin{align*}
+  \nu^* &= -\frac{(bq + \partial_q h(t,\mu))}{2k} \\
+        &= 
+  -\frac{(bq + h_1(t,\mu) + 2q h_2(t,\mu))}{2k}\\
+        &= 
+  -\frac{1}{k} \chi(t)Q^{\nu^*}_t - \frac{b}{2k} \ell(t)\mu_t.
+\end{align*}
 
-\subsection{Initializing Variables}
+% \subsection{Simulation}
 
-\begin{lstlisting}[language=JuliaLocal, style=julia]
-function bandplot(X,t)
-    Xₘ = mean(X,dims=1)'[:]
-    Xₛ = std(X,dims=1)'[:];
-    plot = lines(t, Xₘ, color=:black)
-    band!(t, Xₘ + Xₛ ,Xₘ - Xₛ,  color = (:red, 0.3))
-    return plot
-end
-\end{lstlisting}
+% \begin{displaymath}
+% 	\gamma = \sqrt{\frac{\phi}{k}}
+% \end{displaymath}
 
-\begin{lstlisting}[language=JuliaLocal, style=julia]
-f = Figure()
+% \begin{displaymath}
+% 	\zeta = \frac{\alpha -b/2 + \sqrt{k \phi}}{\alpha -b/2 - \sqrt{k \phi}}
+% \end{displaymath}
 
-ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="νₜ", title="Simulation Variation")
-νₘ = mean(ν,dims=1)'[:]
-νₛ = std(ν,dims=1)'[:];
-lines!(ax1, t, νₘ, color=:black)
-band!(ax1, t, νₘ + νₛ ,νₘ - νₛ,  color = (:red, 0.3))
-ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Qₜ")
-Qₘ = mean(Q,dims=1)'[:]
-Qₛ = std(Q,dims=1)'[:];
-lines!(ax2, t, Qₘ, color=:black)
-band!(ax2, t, Qₘ + Qₛ ,Qₘ - Qₛ,  color = (:red, 0.3))
-f
-\end{lstlisting}
+% \begin{displaymath}
+% 	\chi(t) = \sqrt{k \phi} \frac{1+\zeta e^{2\gamma(T-t)}}{1-\zeta e^{2\gamma(T-t)}}
+% \end{displaymath}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure1.pdf}
-	\label{fig:Trabalho1_figure1}
+% \begin{displaymath}
+% 	\nu_{t}^{*}=-\frac{1}{k} \chi(t) Q_{t}^{\nu^{*}}-\frac{b}{2 k} \overline{\ell}_{1}(t) \mu_{t}
+% \end{displaymath}
+% where $\ell_{1}^{t}$ can be expressed as
+% \begin{displaymath}
+% 	\ell_{1}(t)=b \int_{t}^{T} e^{-\kappa(s-t)} e^{\frac{1}{k} \int_{t}^{s}\chi(u) d u}  d s
+% \end{displaymath}
+% and  simplifies to
+% \begin{displaymath}
+% 	{\qquad \ell_{1}(t)=b \;\ell(T-t) \geq 0}
+% \end{displaymath}
+% where
+% \begin{displaymath}
+% 	{\qquad \ell(\tau)=\frac{1}{\zeta e^{\gamma \tau}-e^{-\gamma \tau}}\left\{e^{\gamma \tau} \frac{1-e^{-(\kappa+\gamma) \tau}}{\kappa+\gamma} \zeta-e^{-\gamma \tau} \frac{1-e^{-(\kappa-\gamma) \tau}}{\kappa-\gamma}\right\}}
+% \end{displaymath}
 
-\end{figure}
+% \subsection{Computing the constants}
 
-\begin{lstlisting}[language=JuliaLocal, style=julia]
-f = Figure()
+% \subsection{Initializing Variables}
 
-ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="Price (Sₜ)")
-lines!(ax1, t, S[1,:])
-lines!(ax1, t, S[2,:])
-lines!(ax1, t, S[3,:])
+% \begin{lstlisting}[language=JuliaLocal, style=julia]
+% function bandplot(X,t)
+%     Xₘ = mean(X,dims=1)'[:]
+%     Xₛ = std(X,dims=1)'[:];
+%     plot = lines(t, Xₘ, color=:black)
+%     band!(t, Xₘ + Xₛ ,Xₘ - Xₛ,  color = (:red, 0.3))
+%     return plot
+% end
+% \end{lstlisting}
 
-ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Asset Amount (Qₜ)")
-lines!(ax2, t, Q[1,:])
-lines!(ax2, t, Q[2,:])
-lines!(ax2, t, Q[3,:])
+% \begin{lstlisting}[language=JuliaLocal, style=julia]
+% f = Figure()
 
-ax3 = Axis(f[1,2],xlabel="Time (Day)", ylabel="Liquidation Rate (νₜ)")
-lines!(ax3, t, ν[1,:])
-lines!(ax3, t, ν[2,:])
-lines!(ax3, t, ν[3,:])
+% ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="νₜ", title="Simulation Variation")
+% νₘ = mean(ν,dims=1)'[:]
+% νₛ = std(ν,dims=1)'[:];
+% lines!(ax1, t, νₘ, color=:black)
+% band!(ax1, t, νₘ + νₛ ,νₘ - νₛ,  color = (:red, 0.3))
+% ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Qₜ")
+% Qₘ = mean(Q,dims=1)'[:]
+% Qₛ = std(Q,dims=1)'[:];
+% lines!(ax2, t, Qₘ, color=:black)
+% band!(ax2, t, Qₘ + Qₛ ,Qₘ - Qₛ,  color = (:red, 0.3))
+% f
+% \end{lstlisting}
 
-ax4 = Axis(f[2,2],xlabel="Time (Day)", ylabel="Net Order Flow Rate (μₜ)")
-lines!(ax4, t, μ[1,:])
-lines!(ax4, t, μ[2,:])
-lines!(ax4, t, μ[3,:])
-f
-\end{lstlisting}
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure1.pdf}
+% 	\label{fig:Trabalho1_figure1}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure2.pdf}
-	\label{fig:Trabalho1_figure2}
+% \end{figure}
 
-\end{figure}
+% \begin{lstlisting}[language=JuliaLocal, style=julia]
+% f = Figure()
+
+% ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="Price (Sₜ)")
+% lines!(ax1, t, S[1,:])
+% lines!(ax1, t, S[2,:])
+% lines!(ax1, t, S[3,:])
+
+% ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Asset Amount (Qₜ)")
+% lines!(ax2, t, Q[1,:])
+% lines!(ax2, t, Q[2,:])
+% lines!(ax2, t, Q[3,:])
+
+% ax3 = Axis(f[1,2],xlabel="Time (Day)", ylabel="Liquidation Rate (νₜ)")
+% lines!(ax3, t, ν[1,:])
+% lines!(ax3, t, ν[2,:])
+% lines!(ax3, t, ν[3,:])
+
+% ax4 = Axis(f[2,2],xlabel="Time (Day)", ylabel="Net Order Flow Rate (μₜ)")
+% lines!(ax4, t, μ[1,:])
+% lines!(ax4, t, μ[2,:])
+% lines!(ax4, t, μ[3,:])
+% f
+% \end{lstlisting}
+
+% \begin{figure}[H]
+% 	\centering
+% 	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure2.pdf}
+% 	\label{fig:Trabalho1_figure2}
+
+% \end{figure}

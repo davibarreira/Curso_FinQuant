@@ -413,12 +413,6 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
 INPUT /home/davibarreira/.texlive2020/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-italic.luc
-INPUT ./figures/Trabalho1_figure1.pdf
-INPUT ./figures/Trabalho1_figure1.pdf
-INPUT ./figures/Trabalho1_figure1.pdf
-INPUT ./figures/Trabalho1_figure2.pdf
-INPUT ./figures/Trabalho1_figure2.pdf
-INPUT ./figures/Trabalho1_figure2.pdf
 OUTPUT appendix.aux
 INPUT ./main.aux
 INPUT ./notebooks/Trabalho1.aux
