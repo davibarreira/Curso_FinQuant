@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.12.0 (TeX Live 2020/Debian)  (format=lualatex 2021.7.5)  29 NOV 2021 13:06
+This is LuaHBTeX, Version 1.12.0 (TeX Live 2020/Debian)  (format=lualatex 2021.7.5)  29 NOV 2021 13:40
  restricted system commands enabled.
  file:line:error style messages enabled.
 **main.tex
@@ -656,77 +656,50 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout2 = ./notebooks/Trabalho1.aux
  (./notebooks/Trabalho1.tex [2
 
-] [3] [4]
-Overfull \hbox (65.5503pt too wide) detected at line 137
-\OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n; \OT1/cmr/m/n/12 )\OML/cmm/m/it/12 @[]H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n\OT1/cmr/m/n/12 ) + \OML/cmm/m/it/12 \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n; \OT1/cmr/m/n/12 )[\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n; \OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; n \OT1/cmr/m/n/12 + 1) \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; n\OT1/cmr/m/n/12 )]\OML/cmm/m/it/12 :
+] [3]
+Underfull \vbox (badness 7796) detected at line 119
  []
 
 
-Overfull \hbox (16.40662pt too wide) detected at line 155
-\OML/cmm/m/it/12 [] \OT1/cmr/m/n/12 = [] [] \OML/cmm/m/it/12 E[] [] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 H[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; S; ; q\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 :
+Underfull \vbox (badness 2837) detected at line 119
  []
 
-[5]
-Overfull \hbox (101.9053pt too wide) detected at line 189
-\OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 H \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 @[]H \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 E\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; S;  \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 ; q\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; S; ; q\OT1/cmr/m/n/12 )] + \OML/cmm/m/it/12 E\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; S;  \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 ; q\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 H\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 t; x; S; ; q\OT1/cmr/m/n/12 )]
- []
-
-
-Overfull \hbox (240.64308pt too wide) detected at line 205
-\OT1/cmr/m/n/12 0 = \OML/cmm/m/it/12 @[]H \OT1/cmr/m/n/12 + []\OMS/cmsy/m/n/12 fL[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[] \OT1/cmr/m/n/12 + (\OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 q[]\OT1/cmr/m/n/12 )\OMS/cmsy/m/n/12 g \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 @[]H \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 []@[]H \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 H \OT1/cmr/m/n/12 + (\OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 q[]\OT1/cmr/m/n/12 ) + []\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 b\OT1/cmr/m/n/12 (\OML/cmm/m/it/12  \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 \OT1/cmr/m/n/12 )\OML/cmm/m/it/12 @[]H \OT1/cmr/m/n/12 + (\OML/cmm/m/it/12 S \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 k\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 @[]H \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 @[]H\OMS/cmsy/m/n/12 g
- []
-
-[6]
-Overfull \hbox (0.3586pt too wide) in paragraph at lines 230--232
-\TU/lmr/m/n/12 Since our bound-ary con-di-tion is $\OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; ; q\OT1/cmr/m/n/12 ) = \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 q[]$\TU/lmr/m/n/12 , then$\OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 ) =
- []
-
-
-Overfull \hbox (68.4808pt too wide) detected at line 236
-\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 @[]h[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 h[] \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 ) + [] \OML/cmm/m/it/12 q\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 @[]h[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 h[] \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 b \OT1/cmr/m/n/12 + 2\OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 ) + [] \OML/cmm/m/it/12 q[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 @[]h[] \OT1/cmr/m/n/12 + \OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 h[] \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12  \OT1/cmr/m/n/12 + [](\OML/cmm/m/it/12 b \OT1/cmr/m/n/12 + 2\OML/cmm/m/it/12 h[]\OT1/cmr/m/n/12 )[] = 0\OML/cmm/m/it/12 :
- []
-
-
-Overfull \hbox (10.15732pt too wide) detected at line 242
-\OMS/cmsy/m/n/12 L[]\OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 ) = \OMS/cmsy/m/n/12 ^^@\OML/cmm/m/it/12 @[]h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 ) + \OML/cmm/m/it/12 E\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T;  \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 \OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 )] + \OML/cmm/m/it/12 E\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T;  \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 \OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^@ \OML/cmm/m/it/12 h\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 T; \OT1/cmr/m/n/12 )]
- []
-
-[7] [8]
-<./figures/Trabalho1_figure1.pdf, id=100, 752.8125pt x 565.11125pt>
+[4] [5] [6] [7] [8]
+<./figures/Trabalho1_figure1.pdf, id=81, 752.8125pt x 565.11125pt>
 File: ./figures/Trabalho1_figure1.pdf Graphic file (type pdf)
 <use ./figures/Trabalho1_figure1.pdf>
-Package luatex.def Info: ./figures/Trabalho1_figure1.pdf  used on input line 306.
+Package luatex.def Info: ./figures/Trabalho1_figure1.pdf  used on input line 350.
 (luatex.def)             Requested size: 312.00119pt x 234.215pt.
- [9<./figures/Trabalho1_figure1.pdf>]
-<./figures/Trabalho1_figure2.pdf, id=123, 752.8125pt x 565.11125pt>
+ [9] [10<./figures/Trabalho1_figure1.pdf>]
+<./figures/Trabalho1_figure2.pdf, id=133, 752.8125pt x 565.11125pt>
 File: ./figures/Trabalho1_figure2.pdf Graphic file (type pdf)
 <use ./figures/Trabalho1_figure2.pdf>
-Package luatex.def Info: ./figures/Trabalho1_figure2.pdf  used on input line 338.
+Package luatex.def Info: ./figures/Trabalho1_figure2.pdf  used on input line 382.
 (luatex.def)             Requested size: 312.00119pt x 234.215pt.
-) [10<./figures/Trabalho1_figure2.pdf>]
+) [11<./figures/Trabalho1_figure2.pdf>]
 No file main.bbl.
 
 \openout2 = appendix.aux
 No file appendix.tex.
 (./main.aux (./notebooks/Trabalho1.aux) (./appendix.aux))
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DF953AD921AF0FF028295D69FB8F9C0B;1362.
+(rerunfilecheck)             Checksum: D8D3CBE80A32DBD8EDCC4E258107FC1F;1473.
 )
 
 Here is how much of LuaTeX's memory you used:
- 21454 strings out of 478824
- 195330,953878 words of node,token memory allocated
- 691 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 44 attribute, 60 glue_spec, 44 attribute_list, 6 write nodes
-   avail lists: 2:2944,3:175,4:4628,5:3487,6:60,7:7392,8:98,9:10279,10:34,11:555
+ 21455 strings out of 478824
+ 244185,953878 words of node,token memory allocated
+ 684 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 40 attribute, 60 glue_spec, 40 attribute_list, 6 write nodes
+   avail lists: 2:3280,3:190,4:5570,5:4113,6:65,7:7555,8:63,9:12225,10:34,11:658
  40272 multiletter control sequences out of 65536+600000
  107 fonts using 36972919 bytes
- 86i,9n,89p,9591b,5228s stack positions out of 5000i,500n,10000p,200000b,200000s
+ 86i,9n,89p,9591b,5230s stack positions out of 5000i,500n,10000p,200000b,200000s
 </home/davibarreira/.local/share/fonts/Unknown Vendor/TrueType/JuliaMono/JuliaMono_Bold.ttf></home/davibarreira/.local/share/fonts/Unknown Vendor/TrueType/JuliaMono/JuliaMono_Regular.ttf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-italic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-bold.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman17-regular.otf></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (10 pages, 529797 bytes).
+Output written on main.pdf (11 pages, 530385 bytes).
 
-PDF statistics: 218 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
- 63 named destinations out of 1000 (max. 131072)
+PDF statistics: 224 PDF objects out of 1000 (max. 8388607)
+ 177 compressed objects within 2 object streams
+ 64 named destinations out of 1000 (max. 131072)
  57 words of extra memory for PDF output out of 10000 (max. 100000000)
 

@@ -1,6 +1,6 @@
 \newpage
 
-\section{Incorporating Order Flux in Optimal Execution}
+\section{Algorithmic Trading: Incorporating Order Flux in Optimal Execution}
 
 We wish to liquidate a significant amount of an asset, such that
 our actions affect it's price.
@@ -14,12 +14,14 @@ at most at time T.
 
 \subsection{Modeling the Problem}
 Let's define some of the variables:
-* $\nu$ - The strategy to liquidate the asset;
-* $\nu_t$ - The rate of which we sell the asset at time $t$.
-* $\mu_t$ - The net order flow, i.e. the rate at which the market is buying/selling the asset;
-* $X_t^\nu$ - The cash flow of the agent at time $t$ using strategy $\nu$;
-* $S_t^\nu$ - The price of the asset at time $t$ under strategy $\nu$;
-* $Q_t^\nu$ - Amount of "shares" of the asset the agent is holding at time $t$ with strategy $\nu$.
+\begin{itemize}
+  \item $\nu$ - The strategy to liquidate the asset;
+  \item $\nu_t$ - The rate of which we sell the asset at time $t$.
+  \item $\mu_t$ - The net order flow, i.e. the rate at which the market is buying/selling the asset;
+  \item $X_t^\nu$ - The cash flow of the agent at time $t$ using strategy $\nu$;
+  \item $S_t^\nu$ - The price of the asset at time $t$ under strategy $\nu$;
+  \item $Q_t^\nu$ - Amount of "shares" of the asset the agent is holding at time $t$ with strategy $\nu$.
+\end{itemize}
 
 Our modelling assumptions are the following.
 First, we'll assume that the both our action and the market's affect the price
@@ -127,40 +129,43 @@ If our process $X$ is a diffusion given by $X_t^\nu = \mu(t,X^\nu_t, \nu_t) dt  
 \begin{displaymath}
 	\mathcal L^\nu_t = \mu(t,x,\nu) \partial_x + \frac{1}{2}\sigma^2(t,x,\nu) \partial_{xx},
 \end{displaymath}
-<!-- Secondly, consider a process:
-\begin{displaymath}
-	dX^\nu_t = \mu (t, X^\nu_t, N_t^\nu, \nu_t) dt + \sigma(t, X^\nu_{t^-},N^\nu_{t^-}, \nu_t) d N_t^\nu,
-\end{displaymath}
-such that $N$ is a counting process with rate $\lambda$.Then, it can be shown that the infinitesimal generator of this process is (see book Algorithmic and High-Frequency Trading page 135):
-\begin{displaymath}
-	\mathcal L^\nu_t H(t,x,n) = \mu(t,x,n,\nu)\partial_x H(t,x,n) + \lambda(t,x,n,\nu)[H(t,x+\sigma(t,x,n,\nu),n+1) - H(t,x,n)].
-\end{displaymath}
+
 Now consider a process:
 \begin{displaymath}
 	d\mu_t = -\kappa \mu_t dt + \eta_{1+N_{t^-}} dN_t
 \end{displaymath}
-where $N_t$ is a homogeneous Poisson process with parameter $\lambda$ and $\eta_i \sim \Xi$ are i.i.d random variablescoming from a distribution with finite first moment (e.g. Exponential). For such process, theinifinitesimal generator is given as the following (page 221 from book Algorithmic and High-Frequency Trading):
+where $N_t$ is a homogeneous Poisson process with parameter $\lambda$ and
+$\eta_i \sim \Xi$ are i.i.d random variables
+coming from a distribution with finite first moment (e.g. Exponential).
+For such process, the
+infinitesimal generator is given as the following (page 221 from book Algorithmic and High-Frequency Trading):
 \begin{displaymath}
 	\mathcal L^\nu_t H(t,x,S,\mu,q) = -\kappa \mu\partial_\mu H + \lambda E_\Xi[H(t,x, S, \mu+\eta,q) - H(t,x,S,\mu,q)].
 \end{displaymath}
-With the inifinitesimal generators, we can postulate the \textbf{Hamilton-Jacobi-Bellman equation (HJB)}, whichis:
+With the infinitesimal generators, we can postulate the \textbf{Hamilton-Jacobi-Bellman equation (HJB)}, which is:
 \begin{displaymath}
 	\partial_t H(t,x) +  \sup_{\nu \in \mathcal A}(\mathcal L^\nu_t H(t,x) + F(t,x,\nu)) = 0, \quad H(T,x) = G(x).
 \end{displaymath}
 
 \subsection{Analytical Solution}
+
 Remember, we want to find the optimal strategy $\nu^* \in \mathcal A$ such that
-\begin{displaymath}
-	\nu^* = \arg\sup_{\nu \in \mathcal A} E_{t,x,S,\mu,q}\left[X^\nu_t + Q_T^\nu(S^\nu_T - \alpha Q^\nu_T) - \phi \int_t^T (Q^\nu_s)^2 ds\right] = H^\nu(t,x,S,\mu,q).
-\end{displaymath}
+\begin{align*}
+  \nu^* &= \arg\sup_{\nu \in \mathcal A}
+  E_{t,x,S,\mu,q}\left[X^\nu_t + Q_T^\nu(S^\nu_T - \alpha Q^\nu_T) - \phi \int_t^T (Q^\nu_s)^2 ds\right]
+     \\ &= \arg \sup_{\nu \in \mathcal A}H^\nu(t,x,S,\mu,q).
+\end{align*}
 Our Stochastic Control Problem is:
 \begin{displaymath}
 	\begin{cases}
 	H(t,x):= \sup_{\nu \in \mathcal A}H^\nu(t,x,S,\mu,q), \\
 	X^{\nu}_t,\text{ solves } d X_t^\nu = (S^\nu_t - k \nu_t) \nu_t dt, \\
-	X^{\nu}_T = x,\\
+	X^{\nu}_0 = 0,\\
 	dS^\nu_t = b(\mu_t - \nu_t)dt + \sigma dW_t,\\
-	d\mu_t = -\kappa \mu_t dt + \eta (dL_t^+ - dL_t^-)
+  S_0^\nu = S_0,
+	d\mu_t = -\kappa \mu_t dt + \eta (dL_t^+ - dL_t^-),\\
+  dQ^\nu_t = -\nu_t dt,\\
+  Q_0^\nu = Q_0.
 	\end{cases}
 \end{displaymath}
 Let's use Dynamic Programming to solve our modelling problem. The \textbf{HJB} equation that we presented before werederived for<!-- The Dynamic Programming Principle is formulated for the problem optimization problem formulated with the following expression: -->
@@ -176,38 +181,49 @@ In our case,
 	F(s,X^\nu_s, \nu_s) = -\phi (Q^\nu_s)^2.
 \end{displaymath}
 To obtain the HJB equation, we have to calculate $\mathcal L^\nu_t$ for each of variable, i.e. $x,S,\mu,q$.Let's use the formula for the diffusion problem which we presented above in the section \textbf{Dynamic Programming}:
-\begin{displaymath}
-	\mathcal L^\nu_{t,S}H = b(\mu-\nu) \partial_S H + \frac{1}{2} \sigma^2 \partial_{SS} H, \\
-	\mathcal L^\nu_{t,x}H = (S-k\nu) \nu \partial_x H \\
-	\mathcal L^\nu_{t,q}H = -\nu \partial_q H.
-\end{displaymath}
+\begin{align*}
+  \mathcal L^\nu_{t,S}H &= b(\mu-\nu) \partial_S H + \frac{1}{2} \sigma^2 \partial_{SS} H, \\
+	\mathcal L^\nu_{t,x}H &= (S-k\nu) \nu \partial_x H \\
+	\mathcal L^\nu_{t,q}H &= -\nu \partial_q H.
+\end{align*}
 For $\mu$, use generator obtained from the mean-reverting process with the Poisson jumps. In our case, we actuallyhave two independent Poisson processes (a positive and a negative):
-\begin{displaymath}
+\begin{align*}
 	\mathcal L^\nu_{t,\mu} H  =
-	-\kappa \mu \partial_\mu H + \lambda E[H(t,x,S,\mu+\eta, q)-H(t,x,S,\mu, q)] +
+  -\kappa \mu \partial_\mu H &+ \lambda E[H(t,x,S,\mu+\eta, q)-H(t,x,S,\mu, q)]]\\
+                             &+
 	\lambda E[H(t,x,S,\mu-\eta, q)-H(t,x,S,\mu, q)]
-\end{displaymath}
+\end{align*}
 The \textit{HJB} equation for our problem becomes:
-\begin{displaymath}
-	0 = \partial_t H +
+\begin{align*}
+  0 &= \partial_t H +
 	\sup_{\nu \in \mathcal A}\{
 	\mathcal L^\nu_{t,S}+
 	\mathcal L^\nu_{t,x}+
 	\mathcal L^\nu_{t,\mu}+
 	\mathcal L^\nu_{t,q}+
-	(-\phi q^2) \}=
-	\partial_t H + \frac{1}{2} \sigma^2 \partial_{SS} H + \mathcal L ^\nu_{t,\mu} H +(-\phi q^2) +
+(-\phi q^2) \}
+  \\& =
+  \partial_t H + \frac{1}{2} \sigma^2 \partial_{SS} H + \mathcal L ^\nu_{t,\mu} H +(-\phi q^2)
+  \\&\quad \quad \quad+
 	\sup_{\nu \in \mathcal A}\{
 	b(\mu-\nu) \partial_S H  +
 	(S-k\nu) \nu \partial_x H +
 	-\nu \partial_q H
 	\}
-\end{displaymath}
+\end{align*}
 To solve this, let's do an educated guess and assume that
 \begin{displaymath}
 	H(t,x,S,\mu,q) = x + qS + h(t,\mu,q).
 \end{displaymath}
-Note that this comes from our boundary condition, which is $H(T,x,S,\mu,q) = x + qS - \alpha q^2$.Hence, we are assuming that the first two terms are equal to the values in the boundary,and we must find a function $h(t,\mu,q)$, such that $h(T,\mu,q) = -\alpha q^2$.Substituting this $H$ in the HJB equation above, we get:
+Note that this comes from our boundary condition,
+which is
+\begin{displaymath}
+  H(T,x,S,\mu,q) = x + qS - \alpha q^2.
+\end{displaymath}
+Hence, we are assuming that the first two terms are equal to the values in the boundary,
+and we must find a function
+$h(t,\mu,q)$, such that $h(T,\mu,q) = -\alpha q^2$.
+Substituting this $H$ in the HJB equation above, we get:
 \begin{displaymath}
 	\partial_t h + \mathcal L^\nu_{t,\mu} h + b \mu q - \pi q^2 +
 	\sup_{\nu \in \mathcal A} \{
@@ -220,25 +236,53 @@ we take the derivative with respect to $\nu$ and make it equal to zero.
 	\frac{\partial}{\partial \nu}-k\nu^2 - (bq + \partial_q h)\nu  = - 2k\nu - bq - \partial_q h = 0 \implies
 	\nu^* = -\frac{1}{2k}(bq + \partial_q h).
 \end{displaymath}
+
 Substituting this value of $\nu$ in the PDE, we get:
 \begin{displaymath}
 	\partial_t h + \mathcal L ^\nu_{t,\mu} h + b \mu q - \phi q^2 + \frac{1}{4k}(bq + \partial_q h)^2 =0.
 \end{displaymath}
+
 We need to solve this equation above for $h$. Again we do an educated guess, assuming that:
 \begin{displaymath}
 	h(t,\mu,q) = h_0(t,\mu) + q h_1(t,\mu) + q^2 h_2(t,\mu).
 \end{displaymath}
-Since our boundary condition is $h(T,\mu,q) = - \alpha q^2$, then$h_0(T,\mu)= h_1(T,\mu) = 0$ and $h_2(T,\mu)=-\alpha$.Using this on the PDE, we get
+
+Since our boundary condition is $h(T,\mu,q) = - \alpha q^2$, then
+$h_0(T,\mu)= h_1(T,\mu) = 0$ and $h_2(T,\mu)=-\alpha$.
+Using this on the PDE, we get
+\begin{align*}
+  &(\partial_t h_0 + \mathcal L ^\nu_{t,\mu} h_0 + \frac{1}{4k} h_1^2 ) + \\
+  &q(\partial_t h_1 + \mathcal L ^\nu_{t,\mu} h_1 + \frac{1}{2k} h_1(b+2h_2) + \\
+  &q^2(\partial_t h_2 + \mathcal L ^\nu_{t,\mu} h_2 -\phi + \frac{1}{4k}(b+2h_2)^2 =0.
+\end{align*}
+
+The terms that are function of $q^2$ only depend on $h_2$,
+so we can solve for $h_2$ independently.
+Also, note that since $h_2(T,\mu) = -\alpha$ and that no there is
+no other term with $\mu$, we can conclude that $h_2$ is independent for $\mu$.
+Hence,
+\begin{align*}
+  \mathcal L^\nu_{t,\mu} h(T,\mu) = -\kappa \mu \partial_\mu h(T,\mu) &+
+  \lambda E[ h(T,\mu+\eta) - h(T,\mu)]\\&+
+	\lambda E[ h(T,\mu-\eta) - h(T,\mu)] \\
+                                  &= 0.
+\end{align*}
+
+Therefore, the equation in terms of $h_2$ reduces to:
+\begin{align*}
+  0 = \partial_t h_2(t) - \phi + \frac{1}{4k}(b+2h_2(t))^2,
+\end{align*}
+subjected to $h_2(T)= -\alpha$. This problem is an ODE of Riccati type, and
+has an exact solution of
 \begin{displaymath}
-	(\partial_t h_0 + \mathcal L ^\nu_{t,\mu} h_0 + \frac{1}{4k} h_1^2 ) + \\
-	q(\partial_t h_1 + \mathcal L ^\nu_{t,\mu} h_1 + \frac{1}{2k} h_1(b+2h_2) + \\
-	q^2(\partial_t h_2 + \mathcal L ^\nu_{t,\mu} h_2 -\phi + \frac{1}{4k}(b+2h_2)^2 =0.
+  h_2(t) = \chi(t) - \frac{1}{2}b,
 \end{displaymath}
-The terms in function of $q^2$ only depend of $h_2$, so we can solve for $h_2$ independently.Note that since $h_2(T,\mu) = -\alpha$, then $\mathcal L ^\nu_{t,\mu}h_2(T,\mu)$ must be constant for every $\mu$, hence
+such that
+
 \begin{displaymath}
-	\mathcal L^\nu_{t,\mu} h(T,\mu) = -\kappa \mu \partial_\mu h(T,\mu) +
-	\lambda E[ h(T,\mu+\eta) - h(T,\mu)] +
-	\lambda E[ h(T,\mu-\eta) - h(T,\mu)]
+	\chi(t) = \sqrt{k \phi} \frac{1+\zeta e^{2\gamma(T-t)}}{1-\zeta e^{2\gamma(T-t)}}, \quad
+	\gamma = \sqrt{\frac{\phi}{k}}, \quad
+	\zeta = \frac{\alpha -b/2 + \sqrt{k \phi}}{\alpha -b/2 - \sqrt{k \phi}}.
 \end{displaymath}
 
 \subsection{Simulation}
