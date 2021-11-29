@@ -76,9 +76,23 @@ Finally, let's visualize the results to understand what is going on.
 
 # ╔═╡ c9e3a0c3-1508-4bed-918f-43216bd0140f
 md"""
-`ηmean` = $(@bind ηmean PlutoUI.Slider(1:15, default=10, show_value=true))
+`ηmean` = $(@bind ηmean PlutoUI.Slider(1:50, default=10, show_value=true))
   `Q₀` = $(@bind q PlutoUI.Slider(0:0.1:1, default=1, show_value=true))
   `S₀` = $(@bind s PlutoUI.Slider(20:10:100, default=50, show_value=true))
+
+Price Volatility: `σ` = $(@bind σₚ PlutoUI.Slider(0.01:0.01:1, default=0.1, show_value=true))
+
+Penalizing Holding Asset: `ϕ` = $(@bind ϕₚ PlutoUI.Slider(0.001:0.001:0.05, default=0.01, show_value=true))
+
+Penalize Having Asset at T: `α` = $(@bind αₚ PlutoUI.Slider(50:10:1000, default=100, show_value=true))
+
+"Walk the Book" parameter: `k` = $(@bind kₚ PlutoUI.Slider(0:0.0001:0.002, default=0.001, show_value=true))
+
+Permanent Price Impact: `b` = $(@bind bₚ PlutoUI.Slider(0:0.00005:0.001, default=0.0001, show_value=true))
+
+Order Flow Arrival Rate: `λ` = $(@bind λₚ PlutoUI.Slider(100:100:2000, default=1000, show_value=true))
+
+Liquidation Rate: `κ` = $(@bind κₚ PlutoUI.Slider(1:50, default=10, show_value=true))
 """
 
 # ╔═╡ bea90fec-1615-482b-8e9d-6b30d980b373
@@ -89,9 +103,8 @@ begin
 	δₜ = T/(360*6.5)
 	t = range(0,T,step = δₜ)
 	
-	k, b = 0.001, 0.0001
-	
-	λ, κ = 1000, 10
+	k, b = kₚ,bₚ	
+	λ, κ = λₚ, κₚ
 	
 	# We are simulating η as a r.v comming from an exponential distribution
 	# with expected value equal to 10
@@ -100,10 +113,10 @@ begin
 	
 	S₀ = s   # Initial price of the asset
 	Q₀ = q    # Initial amount of "shares"
-	ϕ  = 0.01 # Penalty for holding the asset
-	σ  = 0.1  # Volatility for the price process
+	ϕ  = ϕₚ # Penalty for holding the asset
+	σ  = σₚ  # Volatility for the price process
 	
-	α  = 100  # Penalty for having shares at the final time T
+	α  = αₚ # Penalty for having shares at the final time T
 end;
 
 # ╔═╡ c87a639c-f404-4965-b7d1-abc2ce31d784
@@ -118,6 +131,9 @@ begin
 	
 	ℓ = @. (1/(ζ*exp(γ*τ) - exp(-γ * τ))) * (exp(γ*τ) * ((1 - exp(-(κ + γ)*τ))/(κ + γ))*ζ -  exp(-γ*τ) * ((1 - exp(-(κ - γ)*τ))/(κ - γ)))
 end;
+
+# ╔═╡ 8473f184-f66b-4ff2-b7d5-4e32f2166354
+ζ
 
 # ╔═╡ 392d818c-043b-42fa-a45e-94e70a1878c0
 begin
@@ -161,6 +177,11 @@ end;
 
 # ╔═╡ 1f36b5f3-5657-4d79-8dab-526b89174681
 runsimulation!(μ,ν, X, Q, S)
+
+# ╔═╡ a4a45b4d-3e1a-4b7e-8b83-3b880c578ecc
+md"""
+----
+"""
 
 # ╔═╡ 88556874-389f-4ef5-81df-669874c79cb7
 md"""
@@ -1391,6 +1412,7 @@ version = "3.5.0+0"
 # ╠═bea90fec-1615-482b-8e9d-6b30d980b373
 # ╟─5dc25d39-5800-4110-8b90-d1116b1e88fc
 # ╠═c87a639c-f404-4965-b7d1-abc2ce31d784
+# ╠═8473f184-f66b-4ff2-b7d5-4e32f2166354
 # ╟─5249a93f-c8c1-4f78-90c3-03998deca0fb
 # ╠═392d818c-043b-42fa-a45e-94e70a1878c0
 # ╟─fbf9643b-bfc5-4c66-8b3c-9a8a3756fa3f
@@ -1399,6 +1421,7 @@ version = "3.5.0+0"
 # ╟─cd25a899-02e0-4e7e-93f7-71050f25225b
 # ╟─40c4e487-6ec1-4b77-970e-d588b4855a33
 # ╟─c9e3a0c3-1508-4bed-918f-43216bd0140f
+# ╟─a4a45b4d-3e1a-4b7e-8b83-3b880c578ecc
 # ╟─88556874-389f-4ef5-81df-669874c79cb7
 # ╠═6122add2-5d13-4c6a-bbc1-739d4d42f15d
 # ╟─90ed14c2-e5a5-4d28-a603-c9b22fbd25e8
