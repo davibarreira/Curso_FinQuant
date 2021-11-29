@@ -1,0 +1,341 @@
+\newpage
+
+\section{Incorporating Order Flux in Optimal Execution}
+
+We wish to liquidate a significant amount of an asset, such that
+our actions affect it's price.
+If we just try to sell everything at the current market price, our order will walk the book, and thus,we'll end up selling at a price possibly much lower. To avoid this problem, we wish to break our order
+in smaller orders, and "slowly" sell the asset, so that the Limit Order Book can be "replenished".
+The problem now is, if you take to long to sell the asset, you are subjected to the market's variation,
+and the asset's price might drop (which is probably what you expected, since you wanted to sell!).
+Hence, we are looking for an optimal strategy to sell the asset, i.e. how fast should we sell it?
+Also, we consider that our time-horizon is finite, i.e. we wish to liquidate all the asset's shares
+at most at time T.
+
+\subsection{Modeling the Problem}
+Let's define some of the variables:
+* $\nu$ - The strategy to liquidate the asset;
+* $\nu_t$ - The rate of which we sell the asset at time $t$.
+* $\mu_t$ - The net order flow, i.e. the rate at which the market is buying/selling the asset;
+* $X_t^\nu$ - The cash flow of the agent at time $t$ using strategy $\nu$;
+* $S_t^\nu$ - The price of the asset at time $t$ under strategy $\nu$;
+* $Q_t^\nu$ - Amount of "shares" of the asset the agent is holding at time $t$ with strategy $\nu$.
+
+Our modelling assumptions are the following.
+First, we'll assume that the both our action and the market's affect the price
+of the assets linearly and equally,
+and that the price of the asset has a "natural" variability modeled as a
+Brownian motion with variance $\sigma$. Thus,the price of the asset is given by
+\begin{displaymath}
+	dS^\nu_t = \sigma dW_t + b(\mu_t - \nu_t)dt,
+\end{displaymath}
+where $b \in \mathbb R_+$, and $W_t$ is the Brownian motion.
+The net order flow $\mu_t$ will be modelled as two independent Poisson processes,
+one for buying orders and another for selling orders with
+\begin{displaymath}
+	d\mu_t = -\kappa \mu_t dt + \eta (dL_t^+ - dL_t^-)
+\end{displaymath}
+where $\eta$ is the impact of the increase/decrease of order flow,
+and $\kappa$ is a rate of decay of the jumps.
+Our last simplifying assumption is that, when we sell at a rate $\nu_t$,
+we always walk the book a bit, which
+is approximated by a linear equation $k \nu_t$ to model such impact,
+with $k>0$. Thus, the cash process of the agent is given by:
+\begin{displaymath}
+	d X_t^\nu = (S^\nu_t - k \nu_t) \nu_t dt.
+\end{displaymath}
+Note that if we assumed that we always sell the midprice,
+then cash process would be simply $dX_t^\nu = S_t^\nu \nu_t dt$, i.e. the amount
+of money we get is the amount we trade times the price. The amount of shares we have can be computed as:
+\begin{displaymath}
+	dQ_t^\nu = - \nu_t dt.
+\end{displaymath}
+Lastly, we need to know what function we are going to try to optimize.
+This is a bit controversial. We might
+think that what we want to do is find $\nu \in \mathcal A$ (set of admissible strategies)
+that maximizes $E[X^\nu_T]$, i.e. maximize the expected value of the agent's
+cash at the final time $T$.
+But, if this was the case, the strategy
+is not penalized if it's too slow. Hence, instead of $E[X^\nu_T]$, we'll try to maximize
+\begin{displaymath}
+	E\left[X^\nu_T + Q_T^\nu(S^\nu_T - \alpha Q^\nu_T) - \phi \int_t^T (Q^\nu_s)^2 ds\right].
+\end{displaymath}
+Note that we added two extra terms.
+The first one was $Q_T^\nu(S^\nu_T - \alpha Q^\nu_T)$. This term penalizes
+the strategy if there is still some of the asset left by the end of time $T$.
+When this happens, the agent has to sell everthing at market price.
+But if we do that, the strategy is penalized by the amount of shares times
+a parameter $\alpha > 0$.
+Secondly,  $\phi \int_t^T (Q^\nu_s)^2 ds$, which penalizes the strategy by how long it holds the asset.
+This is controlled by a parameter $\phi>0$.
+The largest $\phi$, the quicker the agent wants to get rid of the asset.
+
+\begin{shaded}
+\textbf{Ergodicity Economics}.
+Even with some modifications, such optimization function still has a problem...
+Note that we are trying to
+maximize an expected value, but is this what we really want?
+Mathematicians and economists have noticed a longtime ago that, in practice,
+humans do not actually "try" to maximize the expected value, but something else.
+Economists tried to fix this decoupling between human behavior and what seemed to
+be the correct mathematical function, and thus introduced what is called a utility function.
+This function is supposed to model our apparent risk-aversion behavior.
+Yet, this is still problematic, because the choice of such utility function seems arbitrary.
+Perhaps the best example of such oddity is revealed in the St. Petersburg Paradox.
+The paradox is the following. Consider a game in which a fair coin is tossed.
+If you get "heads", then you add two dollars to your pile. If you flip "heads" again,
+you double the current amount in your pile, i.e. the two dollars becomes four, and so on.
+The game goes on until you flip "tails", in which the game ends and you receive the amount
+of money currently in the pile.
+The question is then, how much money would you pay to play this game?
+Here is where things get interesting.
+
+If you try to
+calculate the expected value of this game, you'll find out that it's actually infinite.
+Hence, if the "fair" price to play the game
+is the expected value, then the "rational" thing to do is to play the game
+for any amount of money... You can already smell the b.s. in the air.
+We can guess that there is something off about this. It's not a surprise that this was
+coined as a paradox, since the "logical" answer seems so "unlogical".
+This problem was posed in 1738 by Daniel Bernoulli, which
+proposed to solve it by introducing the "utility function".
+Yet, this seemed like cheating, since it's not clear how this notion
+could "naturally" emerge from the original problem.
+
+It was only in 2011 that the physicist Ole Peters proposed a new solution,
+which does not make use of any funky utility function, but instead,
+relies only in the problem itself. He realized that the St. Petersburg game
+is not ergodic, i.e.the time-average of the game is not equal to the ensamble-average
+(also known as "expected" value). The only reason the game has infinite expected value
+is that a tiny fraction of possible games
+result in an absurd amount of money. But you, a single individual,
+would only be able to get such
+large amount of money if you played the game a zillion times...
+And if you actually added the amount of money
+you had to pay to play each time, you would not make a lot of money.
+Now we can more clearly see why the expected value of the cash process is not the "correct" thing to maximize.
+\end{shaded}
+
+\subsection{Dynamic Programming}
+Before solving our problem, let's recap some of the results from Dynamic Programming.The Dynamic Programming Principle is formulated considering the following optimization problem:
+\begin{displaymath}
+	H(t,x) = \sup_{\nu \in A} E \left[
+	G(X^\nu_T) + \int^T_t F(s,X^\nu_s, \nu_s) ds
+	\right].
+\end{displaymath}
+If our process $X$ is a diffusion given by $X_t^\nu = \mu(t,X^\nu_t, \nu_t) dt  + \sigma(t,X^\nu_t, \nu_t) dW_t$, then theinifinitesimal generator of $X^\nu_t$ is
+\begin{displaymath}
+	\mathcal L^\nu_t = \mu(t,x,\nu) \partial_x + \frac{1}{2}\sigma^2(t,x,\nu) \partial_{xx},
+\end{displaymath}
+<!-- Secondly, consider a process:
+\begin{displaymath}
+	dX^\nu_t = \mu (t, X^\nu_t, N_t^\nu, \nu_t) dt + \sigma(t, X^\nu_{t^-},N^\nu_{t^-}, \nu_t) d N_t^\nu,
+\end{displaymath}
+such that $N$ is a counting process with rate $\lambda$.Then, it can be shown that the infinitesimal generator of this process is (see book Algorithmic and High-Frequency Trading page 135):
+\begin{displaymath}
+	\mathcal L^\nu_t H(t,x,n) = \mu(t,x,n,\nu)\partial_x H(t,x,n) + \lambda(t,x,n,\nu)[H(t,x+\sigma(t,x,n,\nu),n+1) - H(t,x,n)].
+\end{displaymath}
+Now consider a process:
+\begin{displaymath}
+	d\mu_t = -\kappa \mu_t dt + \eta_{1+N_{t^-}} dN_t
+\end{displaymath}
+where $N_t$ is a homogeneous Poisson process with parameter $\lambda$ and $\eta_i \sim \Xi$ are i.i.d random variablescoming from a distribution with finite first moment (e.g. Exponential). For such process, theinifinitesimal generator is given as the following (page 221 from book Algorithmic and High-Frequency Trading):
+\begin{displaymath}
+	\mathcal L^\nu_t H(t,x,S,\mu,q) = -\kappa \mu\partial_\mu H + \lambda E_\Xi[H(t,x, S, \mu+\eta,q) - H(t,x,S,\mu,q)].
+\end{displaymath}
+With the inifinitesimal generators, we can postulate the \textbf{Hamilton-Jacobi-Bellman equation (HJB)}, whichis:
+\begin{displaymath}
+	\partial_t H(t,x) +  \sup_{\nu \in \mathcal A}(\mathcal L^\nu_t H(t,x) + F(t,x,\nu)) = 0, \quad H(T,x) = G(x).
+\end{displaymath}
+
+\subsection{Analytical Solution}
+Remember, we want to find the optimal strategy $\nu^* \in \mathcal A$ such that
+\begin{displaymath}
+	\nu^* = \arg\sup_{\nu \in \mathcal A} E_{t,x,S,\mu,q}\left[X^\nu_t + Q_T^\nu(S^\nu_T - \alpha Q^\nu_T) - \phi \int_t^T (Q^\nu_s)^2 ds\right] = H^\nu(t,x,S,\mu,q).
+\end{displaymath}
+Our Stochastic Control Problem is:
+\begin{displaymath}
+	\begin{cases}
+	H(t,x):= \sup_{\nu \in \mathcal A}H^\nu(t,x,S,\mu,q), \\
+	X^{\nu}_t,\text{ solves } d X_t^\nu = (S^\nu_t - k \nu_t) \nu_t dt, \\
+	X^{\nu}_T = x,\\
+	dS^\nu_t = b(\mu_t - \nu_t)dt + \sigma dW_t,\\
+	d\mu_t = -\kappa \mu_t dt + \eta (dL_t^+ - dL_t^-)
+	\end{cases}
+\end{displaymath}
+Let's use Dynamic Programming to solve our modelling problem. The \textbf{HJB} equation that we presented before werederived for<!-- The Dynamic Programming Principle is formulated for the problem optimization problem formulated with the following expression: -->
+\begin{displaymath}
+	H(t,x) = \sup_{\nu \in A} E \left[
+	G(X^\nu_T) + \int^T_t F(s,X^\nu_s, \nu_s) ds
+	\right]
+\end{displaymath}
+In our case,
+\begin{displaymath}
+	G(X^\nu_T) =
+	X^\nu_t + Q_T^\nu(S^\nu_T - \alpha Q^\nu_T), \quad
+	F(s,X^\nu_s, \nu_s) = -\phi (Q^\nu_s)^2.
+\end{displaymath}
+To obtain the HJB equation, we have to calculate $\mathcal L^\nu_t$ for each of variable, i.e. $x,S,\mu,q$.Let's use the formula for the diffusion problem which we presented above in the section \textbf{Dynamic Programming}:
+\begin{displaymath}
+	\mathcal L^\nu_{t,S}H = b(\mu-\nu) \partial_S H + \frac{1}{2} \sigma^2 \partial_{SS} H, \\
+	\mathcal L^\nu_{t,x}H = (S-k\nu) \nu \partial_x H \\
+	\mathcal L^\nu_{t,q}H = -\nu \partial_q H.
+\end{displaymath}
+For $\mu$, use generator obtained from the mean-reverting process with the Poisson jumps. In our case, we actuallyhave two independent Poisson processes (a positive and a negative):
+\begin{displaymath}
+	\mathcal L^\nu_{t,\mu} H  =
+	-\kappa \mu \partial_\mu H + \lambda E[H(t,x,S,\mu+\eta, q)-H(t,x,S,\mu, q)] +
+	\lambda E[H(t,x,S,\mu-\eta, q)-H(t,x,S,\mu, q)]
+\end{displaymath}
+The \textit{HJB} equation for our problem becomes:
+\begin{displaymath}
+	0 = \partial_t H +
+	\sup_{\nu \in \mathcal A}\{
+	\mathcal L^\nu_{t,S}+
+	\mathcal L^\nu_{t,x}+
+	\mathcal L^\nu_{t,\mu}+
+	\mathcal L^\nu_{t,q}+
+	(-\phi q^2) \}=
+	\partial_t H + \frac{1}{2} \sigma^2 \partial_{SS} H + \mathcal L ^\nu_{t,\mu} H +(-\phi q^2) +
+	\sup_{\nu \in \mathcal A}\{
+	b(\mu-\nu) \partial_S H  +
+	(S-k\nu) \nu \partial_x H +
+	-\nu \partial_q H
+	\}
+\end{displaymath}
+To solve this, let's do an educated guess and assume that
+\begin{displaymath}
+	H(t,x,S,\mu,q) = x + qS + h(t,\mu,q).
+\end{displaymath}
+Note that this comes from our boundary condition, which is $H(T,x,S,\mu,q) = x + qS - \alpha q^2$.Hence, we are assuming that the first two terms are equal to the values in the boundary,and we must find a function $h(t,\mu,q)$, such that $h(T,\mu,q) = -\alpha q^2$.Substituting this $H$ in the HJB equation above, we get:
+\begin{displaymath}
+	\partial_t h + \mathcal L^\nu_{t,\mu} h + b \mu q - \pi q^2 +
+	\sup_{\nu \in \mathcal A} \{
+	-k\nu^2 - (bq + \partial_q h)\nu
+	\} = 0.
+\end{displaymath}
+To calculate $\sup_{\nu \in \mathcal A} \{-k\nu^2 - (bq + \partial_q h)\nu\}$,
+we take the derivative with respect to $\nu$ and make it equal to zero.
+\begin{displaymath}
+	\frac{\partial}{\partial \nu}-k\nu^2 - (bq + \partial_q h)\nu  = - 2k\nu - bq - \partial_q h = 0 \implies
+	\nu^* = -\frac{1}{2k}(bq + \partial_q h).
+\end{displaymath}
+Substituting this value of $\nu$ in the PDE, we get:
+\begin{displaymath}
+	\partial_t h + \mathcal L ^\nu_{t,\mu} h + b \mu q - \phi q^2 + \frac{1}{4k}(bq + \partial_q h)^2 =0.
+\end{displaymath}
+We need to solve this equation above for $h$. Again we do an educated guess, assuming that:
+\begin{displaymath}
+	h(t,\mu,q) = h_0(t,\mu) + q h_1(t,\mu) + q^2 h_2(t,\mu).
+\end{displaymath}
+Since our boundary condition is $h(T,\mu,q) = - \alpha q^2$, then$h_0(T,\mu)= h_1(T,\mu) = 0$ and $h_2(T,\mu)=-\alpha$.Using this on the PDE, we get
+\begin{displaymath}
+	(\partial_t h_0 + \mathcal L ^\nu_{t,\mu} h_0 + \frac{1}{4k} h_1^2 ) + \\
+	q(\partial_t h_1 + \mathcal L ^\nu_{t,\mu} h_1 + \frac{1}{2k} h_1(b+2h_2) + \\
+	q^2(\partial_t h_2 + \mathcal L ^\nu_{t,\mu} h_2 -\phi + \frac{1}{4k}(b+2h_2)^2 =0.
+\end{displaymath}
+The terms in function of $q^2$ only depend of $h_2$, so we can solve for $h_2$ independently.Note that since $h_2(T,\mu) = -\alpha$, then $\mathcal L ^\nu_{t,\mu}h_2(T,\mu)$ must be constant for every $\mu$, hence
+\begin{displaymath}
+	\mathcal L^\nu_{t,\mu} h(T,\mu) = -\kappa \mu \partial_\mu h(T,\mu) +
+	\lambda E[ h(T,\mu+\eta) - h(T,\mu)] +
+	\lambda E[ h(T,\mu-\eta) - h(T,\mu)]
+\end{displaymath}
+
+\subsection{Simulation}
+
+\begin{displaymath}
+	\gamma = \sqrt{\frac{\phi}{k}}
+\end{displaymath}
+
+\begin{displaymath}
+	\zeta = \frac{\alpha -b/2 + \sqrt{k \phi}}{\alpha -b/2 - \sqrt{k \phi}}
+\end{displaymath}
+
+\begin{displaymath}
+	\chi(t) = \sqrt{k \phi} \frac{1+\zeta e^{2\gamma(T-t)}}{1-\zeta e^{2\gamma(T-t)}}
+\end{displaymath}
+
+\begin{displaymath}
+	\nu_{t}^{*}=-\frac{1}{k} \chi(t) Q_{t}^{\nu^{*}}-\frac{b}{2 k} \overline{\ell}_{1}(t) \mu_{t}
+\end{displaymath}
+where $\ell_{1}^{t}$ can be expressed as
+\begin{displaymath}
+	\ell_{1}(t)=b \int_{t}^{T} e^{-\kappa(s-t)} e^{\frac{1}{k} \int_{t}^{s}\chi(u) d u}  d s
+\end{displaymath}
+and  simplifies to
+\begin{displaymath}
+	{\qquad \ell_{1}(t)=b \;\ell(T-t) \geq 0}
+\end{displaymath}
+where
+\begin{displaymath}
+	{\qquad \ell(\tau)=\frac{1}{\zeta e^{\gamma \tau}-e^{-\gamma \tau}}\left\{e^{\gamma \tau} \frac{1-e^{-(\kappa+\gamma) \tau}}{\kappa+\gamma} \zeta-e^{-\gamma \tau} \frac{1-e^{-(\kappa-\gamma) \tau}}{\kappa-\gamma}\right\}}
+\end{displaymath}
+
+\subsection{Computing the constants}
+
+\subsection{Initializing Variables}
+
+\begin{lstlisting}[language=JuliaLocal, style=julia]
+function bandplot(X,t)
+    Xₘ = mean(X,dims=1)'[:]
+    Xₛ = std(X,dims=1)'[:];
+    plot = lines(t, Xₘ, color=:black)
+    band!(t, Xₘ + Xₛ ,Xₘ - Xₛ,  color = (:red, 0.3))
+    return plot
+end
+\end{lstlisting}
+
+\begin{lstlisting}[language=JuliaLocal, style=julia]
+f = Figure()
+
+ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="νₜ", title="Simulation Variation")
+νₘ = mean(ν,dims=1)'[:]
+νₛ = std(ν,dims=1)'[:];
+lines!(ax1, t, νₘ, color=:black)
+band!(ax1, t, νₘ + νₛ ,νₘ - νₛ,  color = (:red, 0.3))
+ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Qₜ")
+Qₘ = mean(Q,dims=1)'[:]
+Qₛ = std(Q,dims=1)'[:];
+lines!(ax2, t, Qₘ, color=:black)
+band!(ax2, t, Qₘ + Qₛ ,Qₘ - Qₛ,  color = (:red, 0.3))
+f
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure1.pdf}
+	\label{fig:Trabalho1_figure1}
+
+\end{figure}
+
+\begin{lstlisting}[language=JuliaLocal, style=julia]
+f = Figure()
+
+ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="Price (Sₜ)")
+lines!(ax1, t, S[1,:])
+lines!(ax1, t, S[2,:])
+lines!(ax1, t, S[3,:])
+
+ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Asset Amount (Qₜ)")
+lines!(ax2, t, Q[1,:])
+lines!(ax2, t, Q[2,:])
+lines!(ax2, t, Q[3,:])
+
+ax3 = Axis(f[1,2],xlabel="Time (Day)", ylabel="Liquidation Rate (νₜ)")
+lines!(ax3, t, ν[1,:])
+lines!(ax3, t, ν[2,:])
+lines!(ax3, t, ν[3,:])
+
+ax4 = Axis(f[2,2],xlabel="Time (Day)", ylabel="Net Order Flow Rate (μₜ)")
+lines!(ax4, t, μ[1,:])
+lines!(ax4, t, μ[2,:])
+lines!(ax4, t, μ[3,:])
+f
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./figures/Trabalho1_figure2.pdf}
+	\label{fig:Trabalho1_figure2}
+
+\end{figure}
