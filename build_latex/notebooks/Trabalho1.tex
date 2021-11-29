@@ -285,6 +285,34 @@ such that
 	\zeta = \frac{\alpha -b/2 + \sqrt{k \phi}}{\alpha -b/2 - \sqrt{k \phi}}.
 \end{displaymath}
 
+Now that we know $h_2$, we can solve the part of the PDE
+that is multiplied by $q$, i.e.
+\begin{displaymath}
+  \partial_t h_1 + \mathcal L^\nu_{t,\mu} h_1 + b\mu
+  \frac{1}{2k} h_1(b+2 \underbrace{h_2}_{\chi(t) - \frac{1}{2}b}) = 0.
+\end{displaymath}
+
+Suppose that $h_1(t,\mu)= \ell_0 (t) + \mu \ell_1(t)$,
+thus,
+\begin{displaymath}
+  \mathcal L^\nu_{t,\mu} h_1 = -\kappa \mu \ell_1 + E[\lambda(\eta,\ell) + \lambda(-\eta \ell_1)] =
+  -\kappa \mu \ell_1,
+\end{displaymath}
+subjected to $\ell_0(T)=\ell_1(T)=0$. We therefore obtain that
+\begin{displaymath}
+  \partial_t \ell_0 + \frac{1}{k} \chi(t)\ell_0 +
+  \mu\left[
+  \partial_t \ell_1 + \ell_1\left(
+    \frac{1}{k} \chi(t) - \kappa
+    \right) + b
+    \right] = 0.
+\end{displaymath}
+
+Since this must be 0 for every $\mu$, we can solve the ODE's separately 
+for $\ell_0$ and $\ell_1$, obtaining that
+
+
+
 \subsection{Simulation}
 
 \begin{displaymath}

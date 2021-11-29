@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.12.0 (TeX Live 2020/Debian)  (format=lualatex 2021.7.5)  29 NOV 2021 13:40
+This is LuaHBTeX, Version 1.12.0 (TeX Live 2020/Debian)  (format=lualatex 2021.7.5)  29 NOV 2021 13:52
  restricted system commands enabled.
  file:line:error style messages enabled.
 **main.tex
@@ -664,19 +664,19 @@ Underfull \vbox (badness 7796) detected at line 119
 Underfull \vbox (badness 2837) detected at line 119
  []
 
-[4] [5] [6] [7] [8]
-<./figures/Trabalho1_figure1.pdf, id=81, 752.8125pt x 565.11125pt>
+[4] [5] [6] [7] [8] [9]
+<./figures/Trabalho1_figure1.pdf, id=95, 752.8125pt x 565.11125pt>
 File: ./figures/Trabalho1_figure1.pdf Graphic file (type pdf)
 <use ./figures/Trabalho1_figure1.pdf>
-Package luatex.def Info: ./figures/Trabalho1_figure1.pdf  used on input line 350.
+Package luatex.def Info: ./figures/Trabalho1_figure1.pdf  used on input line 375.
 (luatex.def)             Requested size: 312.00119pt x 234.215pt.
- [9] [10<./figures/Trabalho1_figure1.pdf>]
-<./figures/Trabalho1_figure2.pdf, id=133, 752.8125pt x 565.11125pt>
+ [10<./figures/Trabalho1_figure1.pdf>]
+<./figures/Trabalho1_figure2.pdf, id=118, 752.8125pt x 565.11125pt>
 File: ./figures/Trabalho1_figure2.pdf Graphic file (type pdf)
 <use ./figures/Trabalho1_figure2.pdf>
-Package luatex.def Info: ./figures/Trabalho1_figure2.pdf  used on input line 382.
+Package luatex.def Info: ./figures/Trabalho1_figure2.pdf  used on input line 407.
 (luatex.def)             Requested size: 312.00119pt x 234.215pt.
-) [11<./figures/Trabalho1_figure2.pdf>]
+) [11] [12<./figures/Trabalho1_figure2.pdf>]
 No file main.bbl.
 
 \openout2 = appendix.aux
@@ -687,19 +687,19 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 )
 
 Here is how much of LuaTeX's memory you used:
- 21455 strings out of 478824
- 244185,953878 words of node,token memory allocated
- 684 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 40 attribute, 60 glue_spec, 40 attribute_list, 6 write nodes
-   avail lists: 2:3280,3:190,4:5570,5:4113,6:65,7:7555,8:63,9:12225,10:34,11:658
+ 21456 strings out of 478824
+ 195335,953878 words of node,token memory allocated
+ 696 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 43 attribute, 60 glue_spec, 43 attribute_list, 6 write nodes
+   avail lists: 2:2684,3:146,4:4552,5:3297,6:48,7:7555,8:61,9:9799,10:34,11:520
  40272 multiletter control sequences out of 65536+600000
  107 fonts using 36972919 bytes
  86i,9n,89p,9591b,5230s stack positions out of 5000i,500n,10000p,200000b,200000s
 </home/davibarreira/.local/share/fonts/Unknown Vendor/TrueType/JuliaMono/JuliaMono_Bold.ttf></home/davibarreira/.local/share/fonts/Unknown Vendor/TrueType/JuliaMono/JuliaMono_Regular.ttf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-italic.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-bold.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman17-regular.otf></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (11 pages, 530385 bytes).
+Output written on main.pdf (12 pages, 533288 bytes).
 
-PDF statistics: 224 PDF objects out of 1000 (max. 8388607)
- 177 compressed objects within 2 object streams
- 64 named destinations out of 1000 (max. 131072)
+PDF statistics: 229 PDF objects out of 1000 (max. 8388607)
+ 181 compressed objects within 2 object streams
+ 65 named destinations out of 1000 (max. 131072)
  57 words of extra memory for PDF output out of 10000 (max. 100000000)
 
