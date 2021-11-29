@@ -37,31 +37,6 @@ md"""
 Let's begin by defining some initial parameters for our simuation.
 """
 
-# ╔═╡ bea90fec-1615-482b-8e9d-6b30d980b373
-begin
-	Nₛ = 5000 # Number of simulations
-	T  = 1
-	Nₜ = Int(360*6.5)
-	δₜ = T/(360*6.5)
-	t = range(0,T,step = δₜ)
-	
-	k, b = 0.001, 0.0001
-	
-	λ, κ = 1000, 10
-	
-	# We are simulating η as a r.v comming from an exponential distribution
-	# with expected value equal to 10
-	
-	η = Exponential(10)
-	
-	S₀ = 50   # Initial price of the asset
-	Q₀ = 1    # Initial amount of "shares"
-	ϕ  = 0.01 # Penalty for holding the asset
-	σ  = 0.1  # Volatility for the price process
-	
-	α  = 100  # Penalty for having shares at the final time T
-end;
-
 # ╔═╡ 5dc25d39-5800-4110-8b90-d1116b1e88fc
 md"""
 ### Computing Constants
@@ -81,6 +56,56 @@ These are
 ```
 """
 
+# ╔═╡ 5249a93f-c8c1-4f78-90c3-03998deca0fb
+md"""
+### Initializing Variables
+Let's initialize the matrices that will hold the values for our simulations.
+"""
+
+# ╔═╡ fbf9643b-bfc5-4c66-8b3c-9a8a3756fa3f
+md"""
+### Runnning the Simulation
+Everything is setup. We can now run our numerical simulation.
+"""
+
+# ╔═╡ cd25a899-02e0-4e7e-93f7-71050f25225b
+md"""
+### Visualizing Results
+Finally, let's visualize the results to understand what is going on.
+"""
+
+# ╔═╡ c9e3a0c3-1508-4bed-918f-43216bd0140f
+md"""
+`ηmean` = $(@bind ηmean PlutoUI.Slider(1:15, default=10, show_value=true))
+  `Q₀` = $(@bind q PlutoUI.Slider(0:0.1:1, default=1, show_value=true))
+  `S₀` = $(@bind s PlutoUI.Slider(20:10:100, default=50, show_value=true))
+"""
+
+# ╔═╡ bea90fec-1615-482b-8e9d-6b30d980b373
+begin
+	Nₛ = 5000 # Number of simulations
+	T  = 1
+	Nₜ = Int(360*6.5)
+	δₜ = T/(360*6.5)
+	t = range(0,T,step = δₜ)
+	
+	k, b = 0.001, 0.0001
+	
+	λ, κ = 1000, 10
+	
+	# We are simulating η as a r.v comming from an exponential distribution
+	# with expected value equal to 10
+	
+	η = Exponential(ηmean)
+	
+	S₀ = s   # Initial price of the asset
+	Q₀ = q    # Initial amount of "shares"
+	ϕ  = 0.01 # Penalty for holding the asset
+	σ  = 0.1  # Volatility for the price process
+	
+	α  = 100  # Penalty for having shares at the final time T
+end;
+
 # ╔═╡ c87a639c-f404-4965-b7d1-abc2ce31d784
 begin
 	γ = √(ϕ/k)
@@ -93,12 +118,6 @@ begin
 	
 	ℓ = @. (1/(ζ*exp(γ*τ) - exp(-γ * τ))) * (exp(γ*τ) * ((1 - exp(-(κ + γ)*τ))/(κ + γ))*ζ -  exp(-γ*τ) * ((1 - exp(-(κ - γ)*τ))/(κ - γ)))
 end;
-
-# ╔═╡ 5249a93f-c8c1-4f78-90c3-03998deca0fb
-md"""
-### Initializing Variables
-Let's initialize the matrices that will hold the values for our simulations.
-"""
 
 # ╔═╡ 392d818c-043b-42fa-a45e-94e70a1878c0
 begin
@@ -113,12 +132,6 @@ begin
 	S = zeros(Nₛ, Nₜ+1)
 	S[:,1] .= S₀
 end;
-
-# ╔═╡ fbf9643b-bfc5-4c66-8b3c-9a8a3756fa3f
-md"""
-### Runnning the Simulation
-Everything is setup. We can now run our numerical simulation.
-"""
 
 # ╔═╡ d9827b33-8b83-40ed-a9c2-38e8b9314662
 function runsimulation!(μ, ν, X, Q, S)
@@ -149,37 +162,10 @@ end;
 # ╔═╡ 1f36b5f3-5657-4d79-8dab-526b89174681
 runsimulation!(μ,ν, X, Q, S)
 
-# ╔═╡ cd25a899-02e0-4e7e-93f7-71050f25225b
-md"""
-### Visualizing Results
-Finally, let's visualize the results to understand what is going on.
-"""
-
-# ╔═╡ 57421f45-3927-4d92-8161-e6d5c5177a86
-
-
-# ╔═╡ f79ac6af-c6fa-4650-86d8-ac879c47f44b
-
-
-# ╔═╡ 591e2ba2-bab8-49f3-979e-718aa13a33b2
-
-
-# ╔═╡ 35e5ca0e-8688-4304-b1c7-8e1af84f0240
-plot(η; figure=(;resolution=(300,300)),axis=(;title="η Distribution"))
-
-# ╔═╡ 70768b23-520c-425f-a7d6-6d83426d5bef
-
-
-# ╔═╡ ddd843b4-00e7-468a-84d7-c27fcd5dfdf3
-
-
 # ╔═╡ 88556874-389f-4ef5-81df-669874c79cb7
 md"""
 #### Packages used for Plotting
 """
-
-# ╔═╡ c144442d-dd0e-4be8-a6d1-0fdaf259f881
-@bind
 
 # ╔═╡ 90ed14c2-e5a5-4d28-a603-c9b22fbd25e8
 md"""
@@ -209,30 +195,24 @@ function plotsamplesimulation(S, Q, ν, μ, t)
 	lines!(ax4, t, μ[1,:])
 	lines!(ax4, t, μ[2,:])
 	lines!(ax4, t, μ[3,:])
+
+
+	ax5 = Axis(f[3,1],xlabel="Time (Day)", ylabel="νₜ")
+	νₘ = mean(ν,dims=1)'[:]
+	νₛ = std(ν,dims=1)'[:];
+	lines!(ax5, t, νₘ, color=:black)
+	band!(ax5, t, νₘ + νₛ ,νₘ - νₛ,  color = (:red, 0.3))
+	
+	ax6 = Axis(f[3,2],xlabel="Time (Day)", ylabel="Qₜ")
+	Qₘ = mean(Q,dims=1)'[:]
+	Qₛ = std(Q,dims=1)'[:];
+	lines!(ax6, t, Qₘ, color=:black)
+	band!(ax6, t, Qₘ + Qₛ ,Qₘ - Qₛ,  color = (:red, 0.3))
 	return f
 end
 
 # ╔═╡ 40c4e487-6ec1-4b77-970e-d588b4855a33
 plotsamplesimulation(S, Q, ν, μ, t)
-
-# ╔═╡ 8c1f6251-1a64-48f4-8b7b-48c4dcfa38c1
-function plotband(ν, Q, t)
-	f = Figure()
-	ax1 = Axis(f[1,1],xlabel="Time (Day)", ylabel="νₜ", title="Simulation Variation")
-	νₘ = mean(ν,dims=1)'[:]
-	νₛ = std(ν,dims=1)'[:];
-	lines!(ax1, t, νₘ, color=:black)
-	band!(ax1, t, νₘ + νₛ ,νₘ - νₛ,  color = (:red, 0.3))
-	ax2 = Axis(f[2,1],xlabel="Time (Day)", ylabel="Qₜ")
-	Qₘ = mean(Q,dims=1)'[:]
-	Qₛ = std(Q,dims=1)'[:];
-	lines!(ax2, t, Qₘ, color=:black)
-	band!(ax2, t, Qₘ + Qₛ ,Qₘ - Qₛ,  color = (:red, 0.3))
-	return f
-end
-
-# ╔═╡ d10b411d-0ef1-4a5c-a0d4-0673f46439d7
-plotband(ν, Q, t)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1417,19 +1397,11 @@ version = "3.5.0+0"
 # ╠═d9827b33-8b83-40ed-a9c2-38e8b9314662
 # ╠═1f36b5f3-5657-4d79-8dab-526b89174681
 # ╟─cd25a899-02e0-4e7e-93f7-71050f25225b
-# ╠═57421f45-3927-4d92-8161-e6d5c5177a86
-# ╠═f79ac6af-c6fa-4650-86d8-ac879c47f44b
-# ╠═591e2ba2-bab8-49f3-979e-718aa13a33b2
-# ╟─35e5ca0e-8688-4304-b1c7-8e1af84f0240
-# ╠═70768b23-520c-425f-a7d6-6d83426d5bef
-# ╠═ddd843b4-00e7-468a-84d7-c27fcd5dfdf3
-# ╠═40c4e487-6ec1-4b77-970e-d588b4855a33
-# ╠═d10b411d-0ef1-4a5c-a0d4-0673f46439d7
+# ╟─40c4e487-6ec1-4b77-970e-d588b4855a33
+# ╟─c9e3a0c3-1508-4bed-918f-43216bd0140f
 # ╟─88556874-389f-4ef5-81df-669874c79cb7
 # ╠═6122add2-5d13-4c6a-bbc1-739d4d42f15d
-# ╠═c144442d-dd0e-4be8-a6d1-0fdaf259f881
 # ╟─90ed14c2-e5a5-4d28-a603-c9b22fbd25e8
 # ╠═eeb68bbb-5d19-46cd-ac68-9207f9b37aca
-# ╠═8c1f6251-1a64-48f4-8b7b-48c4dcfa38c1
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
